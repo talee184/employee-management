@@ -2,31 +2,40 @@ package com.talee.employee.management.model;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
 
-  private Users users;
+  /**
+   *
+   */
+  private static final long serialVersionUID = 1L;
+  String userName = null;
+  String password = null;
+  Set<SimpleGrantedAuthority> authorities;
 
-  public UserPrincipal(Users users) {
-    this.users = users;
+  public UserPrincipal(Users user) {
+    userName = user.getUsername();
+    password = user.getPassword();
+    authorities = Collections.singleton(new SimpleGrantedAuthority("USER"));
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singleton(new SimpleGrantedAuthority("USER"));
+    return authorities;
   }
 
   @Override
   public String getPassword() {
-    return users.getPassword();
+    return password;
   }
 
   @Override
   public String getUsername() {
-    return users.getUsername();
+    return userName;
   }
 
   @Override
